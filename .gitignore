@@ -139,6 +139,7 @@ preprocessing/.ipynb_checkpoints
 
 # pymol smh
 *.cif
-
+analysis/custom*
+cache_dir
 jobs
-local.yaml
+examples/longleaf
