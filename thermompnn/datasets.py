@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import pickle
 import os
-from Bio import pairwise2
+from Bio.Align import PairwiseAligner
 from math import isnan
 from tqdm import tqdm
 from dataclasses import dataclass
@@ -31,22 +31,33 @@ class Mutation:
     pdb: Optional[str] = ""
 
 
-def seq1_index_to_seq2_index(align, index):
-    """Do quick conversion of index after alignment"""
+def get_global_alignment(seq1, seq2):
+    """Perform global sequence alignment using Bio.Align"""
+    aligner = PairwiseAligner()
+    aligner.mode = "global"
+    aligner.match_score = 1
+    aligner.mismatch_score = 0
+    aligner.open_gap_score = -0.5
+    aligner.extend_gap_score = -0.1
+    return next(aligner.align(seq1, seq2))
+
+
+def seq1_index_to_seq2_index(alignment, index):
+    """Convert index from seq1 to seq2 after alignment"""
     cur_seq1_index = 0
 
     # first find the aligned index
-    for aln_idx, char in enumerate(align.seqA):
-        if char != "-":
+    for aln_idx, (char1, char2) in enumerate(zip(alignment.target, alignment.query)):
+        if char1 != "-":
             cur_seq1_index += 1
         if cur_seq1_index > index:
             break
 
-    # now the index in seq 2 cooresponding to aligned index
-    if align.seqB[aln_idx] == "-":
+    # now get the index in seq2 corresponding to aligned index
+    if alignment.query[aln_idx] == "-":
         return None
 
-    seq2_to_idx = align.seqB[: aln_idx + 1]
+    seq2_to_idx = alignment.query[: aln_idx + 1]
     seq2_idx = aln_idx
     for char in seq2_to_idx:
         if char == "-":
@@ -260,10 +271,8 @@ class FireProtDataset(torch.utils.data.Dataset):
                 )
 
             except AssertionError:  # contingency for mis-alignments
-                align, *rest = pairwise2.align.globalxx(
-                    seq, pdb[0]["seq"].replace("-", "X")
-                )
-                pdb_idx = seq1_index_to_seq2_index(align, row.pdb_position)
+                alignment = get_global_alignment(seq, pdb[0]["seq"].replace("-", "X"))
+                pdb_idx = seq1_index_to_seq2_index(alignment, row.pdb_position)
                 if pdb_idx is None:
                     continue
                 assert (
