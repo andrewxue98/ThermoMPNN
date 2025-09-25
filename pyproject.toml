@@ -4,6 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 include-package-data = true
+package-data = {thermompnn = ["../models/*.pt", "../config.yaml", "../local.yaml", "../dataset_splits/*.pkl"]}
 
 [tool.setuptools.packages.find]
 include = ["thermompnn", "thermompnn.*"]
@@ -19,5 +20,26 @@ authors = [
     {name = "Henry Dieckhaus"},
     {name = "Michael Brocidiacono"},
     {name = "Nicholas Z. Randolph"},
-    {name = "Brian Kuhlman"},
+    {name = "Brian Kuhlman", email = "kuhlman@email.unc.edu"},
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision",
+    "torchaudio",
+    "pytorch-lightning",
+    "biopython",
+    "wandb",
+    "tqdm",
+    "pandas",
+    "numpy",
+    "omegaconf",
+    "joblib",
+]
+
+[project.urls]
+Homepage = "https://github.com/Kuhlman-Lab/ThermoMPNN"
