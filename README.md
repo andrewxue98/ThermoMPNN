@@ -1,1 +1,1 @@
-# Fork of ThermoMPNN for CB purposes
+# Fork of ThermoMPNN for CB
