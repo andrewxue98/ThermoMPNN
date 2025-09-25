@@ -124,18 +124,26 @@ def get_trained_model(model_name, config, checkpt_dir="models/", override_custom
         import importlib.resources
 
         try:
-            with importlib.resources.path("thermompnn", "../models") as models_dir:
-                model_path = os.path.join(models_dir, model_name)
-                if not os.path.exists(model_path):
-                    # Fallback to the old behavior
-                    model_path = os.path.join(
-                        config.platform.thermompnn_dir, checkpt_dir, model_name
-                    )
+            # First try the new package structure
+            with importlib.resources.path("models", model_name) as model_path:
+                return TransferModelPL.load_from_checkpoint(
+                    str(model_path), cfg=config
+                ).model
         except (ImportError, ModuleNotFoundError):
-            # Fallback to the old behavior
-            model_path = os.path.join(
-                config.platform.thermompnn_dir, checkpt_dir, model_name
-            )
+            try:
+                # Try the old location as fallback
+                with importlib.resources.path("thermompnn", "../models") as models_dir:
+                    model_path = os.path.join(models_dir, model_name)
+                    if not os.path.exists(model_path):
+                        # Final fallback to the old behavior
+                        model_path = os.path.join(
+                            config.platform.thermompnn_dir, checkpt_dir, model_name
+                        )
+            except (ImportError, ModuleNotFoundError):
+                # Last resort fallback
+                model_path = os.path.join(
+                    config.platform.thermompnn_dir, checkpt_dir, model_name
+                )
 
     return TransferModelPL.load_from_checkpoint(model_path, cfg=config).model
 
