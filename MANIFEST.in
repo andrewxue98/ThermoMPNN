@@ -1,0 +1,9 @@
+include LICENSE
+include README.md
+include config.yaml
+include local.yaml
+recursive-include models *.pt
+recursive-include dataset_splits *.pkl
+recursive-include images *
+recursive-include examples *
+recursive-include thermompnn *

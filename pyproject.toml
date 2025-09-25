@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["thermompnn", "thermompnn.*"]
+
+[project]
+name = "thermompnn"
+version = "1.0.0"
+description = "A graph neural network for predicting changes in protein stability"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Henry Dieckhaus"},
+    {name = "Michael Brocidiacono"},
+    {name = "Nicholas Z. Randolph"},
+    {name = "Brian Kuhlman"},
+]
