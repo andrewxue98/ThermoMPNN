@@ -6,11 +6,15 @@ from omegaconf import OmegaConf
 import os
 import sys
 
-sys.path.append("../")
-from ..datasets import MegaScaleDataset, ddgBenchDataset, FireProtDataset, Mutation
-from ..protein_mpnn_utils import loss_smoothed, tied_featurize
-from ..train_thermompnn import TransferModelPL
-from ..model_utils import featurize
+from thermompnn.datasets import (
+    MegaScaleDataset,
+    ddgBenchDataset,
+    FireProtDataset,
+    Mutation,
+)
+from thermompnn.protein_mpnn_utils import loss_smoothed, tied_featurize
+from thermompnn.train_thermompnn import TransferModelPL
+from thermompnn.model_utils import featurize
 from .thermompnn_benchmarking import (
     compute_centrality,
     ProteinMPNNBaseline,

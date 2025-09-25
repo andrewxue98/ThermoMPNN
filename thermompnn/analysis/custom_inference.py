@@ -6,9 +6,9 @@ import torch.nn as nn
 from omegaconf import OmegaConf
 from Bio.PDB import PDBParser
 
-from ..datasets import Mutation
-from ..train_thermompnn import TransferModelPL
-from ..protein_mpnn_utils import tied_featurize, alt_parse_PDB
+from thermompnn.datasets import Mutation
+from thermompnn.train_thermompnn import TransferModelPL
+from thermompnn.protein_mpnn_utils import tied_featurize, alt_parse_PDB
 from .thermompnn_benchmarking import get_trained_model
 from .SSM import get_ssm_mutations
 

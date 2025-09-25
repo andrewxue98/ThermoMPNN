@@ -6,13 +6,10 @@ import torch.nn as nn
 from torchmetrics import MeanSquaredError, R2Score, SpearmanCorrCoef, PearsonCorrCoef
 from omegaconf import OmegaConf
 
-import sys
-
-sys.path.append("../")
-from ..datasets import MegaScaleDataset, FireProtDataset, ddgBenchDataset
-from ..transfer_model import get_protein_mpnn
-from ..train_thermompnn import TransferModelPL
-from ..protein_mpnn_utils import tied_featurize
+from thermompnn.datasets import MegaScaleDataset, FireProtDataset, ddgBenchDataset
+from thermompnn.transfer_model import get_protein_mpnn
+from thermompnn.train_thermompnn import TransferModelPL
+from thermompnn.protein_mpnn_utils import tied_featurize
 
 
 ALPHABET = "ACDEFGHIKLMNPQRSTVWYX"
