@@ -105,12 +105,39 @@ def get_metrics():
 
 
 def get_trained_model(model_name, config, checkpt_dir="models/", override_custom=False):
+    """Load a trained ThermoMPNN model.
+
+    Args:
+        model_name: Name of the model file (e.g. "thermoMPNN_default.pt")
+        config: Model configuration
+        checkpt_dir: Directory containing model checkpoints (default: "models/")
+        override_custom: If True, model_name is treated as a full path
+
+    Returns:
+        Loaded model
+    """
     if override_custom:
-        return TransferModelPL.load_from_checkpoint(model_name, cfg=config).model
+        # If it's a full path, use it directly
+        model_path = model_name
     else:
-        model_loc = os.path.join(config.platform.thermompnn_dir, checkpt_dir)
-        model_loc = os.path.join(model_loc, model_name)
-        return TransferModelPL.load_from_checkpoint(model_loc, cfg=config).model
+        # Try to find the model in the package data
+        import importlib.resources
+
+        try:
+            with importlib.resources.path("thermompnn", "../models") as models_dir:
+                model_path = os.path.join(models_dir, model_name)
+                if not os.path.exists(model_path):
+                    # Fallback to the old behavior
+                    model_path = os.path.join(
+                        config.platform.thermompnn_dir, checkpt_dir, model_name
+                    )
+        except (ImportError, ModuleNotFoundError):
+            # Fallback to the old behavior
+            model_path = os.path.join(
+                config.platform.thermompnn_dir, checkpt_dir, model_name
+            )
+
+    return TransferModelPL.load_from_checkpoint(model_path, cfg=config).model
 
 
 def run_prediction_default(name, model, dataset_name, dataset, results):
