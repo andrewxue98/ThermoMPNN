@@ -243,34 +243,3 @@ def main(cfg, args):
             raw_pred_df = raw_pred_df.reset_index(drop=True)
             raw_pred_df.to_csv(name + "_" + dataset_name + "_SSM_preds.csv")
             del raw_pred_df
-
-
-if __name__ == "__main__":
-    cfg = OmegaConf.load("../local.yaml")
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--pick_best",
-        action="store_true",
-        default=False,
-        help="Keep only the BEST mutation at each position",
-    )
-    parser.add_argument(
-        "--include_cys",
-        action="store_true",
-        default=False,
-        help="Include cysteine as potential mutation option."
-        "Due to assay artifacts, mutations to cys are predicted poorly.",
-    )
-    parser.add_argument(
-        "--centrality",
-        action="store_true",
-        default=False,
-        help="Calculate centrality value for each residue (# neighbors). "
-        "Only used if --keep_preds is enabled.",
-    )
-    args = parser.parse_args()
-
-    with torch.no_grad():
-        main(cfg, args)

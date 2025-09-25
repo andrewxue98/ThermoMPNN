@@ -4,13 +4,17 @@ import pickle
 import functools
 import inspect
 
+
 def stringify_cache_key(key):
     return uuid.uuid3(uuid.NAMESPACE_DNS, str(key)).hex
 
+
 def cache(cache_key, version=0.0, disable=False):
     """Cache the result of a function call on disk for speedup"""
+
     def inner_cache(f):
         f_sig = inspect.signature(f)
+
         @functools.wraps(f)
         def cached_f(cfg, *args, **kwargs):
 
@@ -21,7 +25,9 @@ def cache(cache_key, version=0.0, disable=False):
             kwargs = bound.kwargs
 
             key = stringify_cache_key(cache_key(cfg, *args, **kwargs))
-            cache_file = f"{cfg.platform.cache_dir}/functions/{f.__name__}/{version}/{key}.pkl"
+            cache_file = (
+                f"{cfg.platform.cache_dir}/functions/{f.__name__}/{version}/{key}.pkl"
+            )
             if not disable:
                 try:
                     with open(cache_file, "rb") as fh:
@@ -35,5 +41,7 @@ def cache(cache_key, version=0.0, disable=False):
             with open(cache_file, "wb") as fh:
                 pickle.dump(ret, fh)
                 return ret
+
         return cached_f
+
     return inner_cache

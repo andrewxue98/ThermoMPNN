@@ -19,9 +19,7 @@ def get_protein_mpnn(cfg, version="v_48_020.pt"):
     hidden_dim = 128
     num_layers = 3
 
-    model_weight_dir = os.path.join(
-        cfg.platform.thermompnn_dir, "vanilla_model_weights"
-    )
+    model_weight_dir = cfg.platform.thermompnn_dir
     checkpoint_path = os.path.join(model_weight_dir, version)
     # checkpoint_path = "vanilla_model_weights/v_48_020.pt"
     checkpoint = torch.load(checkpoint_path, map_location="cpu")
