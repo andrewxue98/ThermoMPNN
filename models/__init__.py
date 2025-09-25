@@ -1,1 +1,0 @@
-"""Model weights for ThermoMPNN."""

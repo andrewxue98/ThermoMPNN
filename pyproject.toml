@@ -4,13 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 include-package-data = true
+package-data = {thermompnn = []}
 
 [tool.setuptools.packages.find]
-include = ["thermompnn", "thermompnn.*", "models"]
-
-[tool.setuptools.package-data]
-models = ["*.pt"]
-thermompnn = ["config.yaml", "local.yaml", "dataset_splits/*.pkl"]
+include = ["thermompnn", "thermompnn.*"]
 
 [project]
 name = "thermompnn"
