@@ -3,6 +3,8 @@ from omegaconf import OmegaConf
 
 from thermompnn.train_thermompnn import TransferModelPL
 
+ALPHABET = "ACDEFGHIKLMNPQRSTVWYX"
+
 
 def load_model(vanilla_model_path, thermompnn_model_path):
     cfg = OmegaConf.create(
