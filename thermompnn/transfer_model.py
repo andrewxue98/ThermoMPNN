@@ -14,13 +14,12 @@ MLP = True
 SUBTRACT_MUT = True
 
 
-def get_protein_mpnn(cfg, version="v_48_020.pt"):
+def get_protein_mpnn(cfg):
     """Loading Pre-trained ProteinMPNN model for structure embeddings"""
     hidden_dim = 128
     num_layers = 3
 
-    model_weight_dir = cfg.platform.thermompnn_dir
-    checkpoint_path = os.path.join(model_weight_dir, version)
+    checkpoint_path = cfg.platform.vanilla_model_path
     # checkpoint_path = "vanilla_model_weights/v_48_020.pt"
     checkpoint = torch.load(checkpoint_path, map_location="cpu")
     model = ProteinMPNN(

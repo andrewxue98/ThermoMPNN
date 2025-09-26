@@ -244,16 +244,3 @@ def train(cfg):
                 val_loader,
                 ckpt_path=checkpoint_callback.best_model_path,
             )
-
-
-if __name__ == "__main__":
-    # config.yaml and local.yaml files are combined to assemble all runtime arguments
-    if len(sys.argv) == 1:
-        yaml = "config.yaml"
-    else:
-        yaml = sys.argv[1]
-
-    cfg = OmegaConf.load(yaml)
-    cfg = OmegaConf.merge(cfg, OmegaConf.load("local.yaml"))
-    cfg = OmegaConf.merge(cfg, OmegaConf.from_cli())
-    train(cfg)
